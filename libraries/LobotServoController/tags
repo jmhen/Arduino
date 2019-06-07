@@ -1,0 +1,47 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ACTION_GROUP_COMPLETE	.\LobotServoController.h	26;"	d
+ACTION_GROUP_RUNNING	.\LobotServoController.h	24;"	d
+ACTION_GROUP_STOPPED	.\LobotServoController.h	25;"	d
+BATTERY_VOLTAGE	.\LobotServoController.h	23;"	d
+BYTE_TO_HW	.\LobotServoController.cpp	16;"	d	file:
+CMD_ACTION_GROUP_RUN	.\LobotServoController.h	17;"	d
+CMD_ACTION_GROUP_SPEED	.\LobotServoController.h	19;"	d
+CMD_ACTION_GROUP_STOP	.\LobotServoController.h	18;"	d
+CMD_GET_BATTERY_VOLTAGE	.\LobotServoController.h	20;"	d
+CMD_SERVO_MOVE	.\LobotServoController.h	16;"	d
+FRAME_HEADER	.\LobotServoController.h	15;"	d
+GET_HIGH_BYTE	.\LobotServoController.cpp	14;"	d	file:
+GET_LOW_BYTE	.\LobotServoController.cpp	12;"	d	file:
+ID	.\LobotServoController.h	/^  uint8_t  ID;       \/\/舵机ID$/;"	m	struct:LobotServo
+LOBOTSERVOCONTROLLER_H	.\LobotServoController.h	9;"	d
+LobotServo	.\LobotServoController.h	/^struct LobotServo {  \/\/舵机ID和位置结构体$/;"	s
+LobotServoController	.\LobotServoController.cpp	/^LobotServoController::LobotServoController(HardwareSerial &A)$/;"	f	class:LobotServoController
+LobotServoController	.\LobotServoController.cpp	/^LobotServoController::LobotServoController(SoftwareSerial &A)$/;"	f	class:LobotServoController
+LobotServoController	.\LobotServoController.h	/^class LobotServoController {$/;"	c
+Position	.\LobotServoController.h	/^  uint16_t Position; \/\/舵机数据$/;"	m	struct:LobotServo
+SerialX	.\LobotServoController.h	/^    Stream *SerialX;$/;"	m	class:LobotServoController
+actionGroupRunTimes	.\LobotServoController.h	/^    uint16_t actionGroupRunTimes; \/\/正在运行的动作组运行次数$/;"	m	class:LobotServoController
+actionGroupRunning	.\LobotServoController.cpp	/^int LobotServoController::actionGroupRunning()$/;"	f	class:LobotServoController
+batteryVoltage	.\LobotServoController.h	/^    uint16_t batteryVoltage; \/\/控制板电池电压$/;"	m	class:LobotServoController
+getBatteryVolt	.\LobotServoController.cpp	/^uint16_t LobotServoController::getBatteryVolt(uint32_t timeout)$/;"	f	class:LobotServoController
+getBatteryVolt	.\LobotServoController.cpp	/^uint16_t LobotServoController::getBatteryVolt(void)$/;"	f	class:LobotServoController
+isGetBatteryVolt	.\LobotServoController.h	/^	bool isGetBatteryVolt;$/;"	m	class:LobotServoController
+isRunning	.\LobotServoController.cpp	/^bool LobotServoController::isRunning()$/;"	f	class:LobotServoController
+isRunning_	.\LobotServoController.h	/^	bool isRunning_; \/\/有动作组运行？$/;"	m	class:LobotServoController
+isUseHardwareSerial	.\LobotServoController.h	/^	bool isUseHardwareSerial;$/;"	m	class:LobotServoController
+moveServo	.\LobotServoController.cpp	/^void LobotServoController::moveServo(uint8_t servoID, uint16_t Position, uint16_t Time)$/;"	f	class:LobotServoController
+moveServos	.\LobotServoController.cpp	/^void LobotServoController::moveServos(LobotServo servos[], uint8_t Num, uint16_t Time)$/;"	f	class:LobotServoController
+moveServos	.\LobotServoController.cpp	/^void LobotServoController::moveServos(uint8_t Num, uint16_t Time, ...)$/;"	f	class:LobotServoController
+numOfActinGroupRunning	.\LobotServoController.h	/^    uint8_t  numOfActinGroupRunning; \/\/正在运行的动作组序号$/;"	m	class:LobotServoController
+receiveHandle	.\LobotServoController.cpp	/^void LobotServoController::receiveHandle()$/;"	f	class:LobotServoController
+runActionGroup	.\LobotServoController.cpp	/^void LobotServoController::runActionGroup(uint8_t numOfAction, uint16_t Times)$/;"	f	class:LobotServoController
+sendCMDGetBatteryVolt	.\LobotServoController.cpp	/^void LobotServoController::sendCMDGetBatteryVolt()$/;"	f	class:LobotServoController
+setActionGroupSpeed	.\LobotServoController.cpp	/^void LobotServoController::setActionGroupSpeed(uint8_t numOfAction, uint16_t Speed)$/;"	f	class:LobotServoController
+setAllActionGroupSpeed	.\LobotServoController.cpp	/^void LobotServoController::setAllActionGroupSpeed(uint16_t Speed)$/;"	f	class:LobotServoController
+stopActionGroup	.\LobotServoController.cpp	/^void LobotServoController::stopActionGroup(void)$/;"	f	class:LobotServoController
+waitForStop	.\LobotServoController.cpp	/^bool LobotServoController::waitForStop(uint32_t timeout)$/;"	f	class:LobotServoController
