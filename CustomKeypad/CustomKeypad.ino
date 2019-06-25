@@ -16,6 +16,7 @@
 
 #define SERVO   12
 #define MAX_DISTANCE 400
+#define BUZZER  13
 
 const byte ROWS = 4; //four rows
 const byte COLS = 4; //three columns
@@ -25,13 +26,13 @@ char keys[ROWS][COLS] = {
   {'7','8','9','C'},
   {'*','0','#','D'}
 };
-
 byte rowPins[ROWS] = {2, 3, 4, 5}; //connect to the row pinouts of the keypad
 byte colPins[COLS] = {6,7,8,9}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 Servo servo;
-int angle = 10;
+int angle = 25;
+String PIN = "320";
 
 
 void setup(){
@@ -40,6 +41,7 @@ void setup(){
   servo.write(angle);
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
+  pinMode(BUZZER,OUTPUT);
   digitalWrite(TRIG, LOW);
 
 }
@@ -57,31 +59,66 @@ void getDistance() {
     timer = millis() + 100;
   }
 }
-  
-void loop(){
 
+void playUpTone(){
+     tone(BUZZER, 261 );
+     delay(500); //等待1000毫秒
+     tone(BUZZER, 329 );
+     delay(500); //等待1000毫秒
+     tone(BUZZER, 392 );
+     delay(500); //等待1000毫秒
+     noTone(BUZZER);//停止发声
+}
+
+void playSuccessTone(){
+     tone(BUZZER, 261 );
+     delay(500); //等待1000毫秒
+     tone(BUZZER, 329 );
+     delay(500); //等待1000毫秒
+     tone(BUZZER, 392 );
+     delay(500); //等待1000毫秒
+     tone(BUZZER, 523 );
+     delay(500); //等待1000毫秒
+     noTone(BUZZER);//停止发声
+}
+
+void playFailTone(){
+     tone(BUZZER, 220 );
+     delay(500); //等待1000毫秒
+     noTone(BUZZER);//停止发声
+}
+
+void loop(){
+  static uint32_t timer;
   getDistance();
  
 
   // this checkes if 4 is pressed, then do something. Here  we print the text but you can control something.
   if (distance > 1 && distance <15){
      Serial.print("object approaching: "); Serial.println(distance);
+     playUpTone();
+     timer = millis() + 10000;
+     Serial.println(timer);
      String password = String("");
      uint8_t count = 0;
      char key;
-     while(count<3){
+     while(millis() < timer){
         key = keypad.getKey();
+        if(key == 35) break;
         if(key){
           Serial.println(key);
           password += key; 
           count += 1;
-        }
+        } 
      }
-     if(password.equals("320")){
+     Serial.println("Detected #: end of password");
+     if(password.equals(PIN)){
         Serial.print("Password Correct!");
-         //LED light up
-      
-        for(angle = 10; angle <= 90; angle++){                                  
+         //play sound
+         playSuccessTone();
+
+        delay(500);
+        for(angle = 25; angle <= 120; angle++){                                  
           servo.write(angle);               
           delay(15);                   
         } 
@@ -91,10 +128,14 @@ void loop(){
         }
 
         Serial.print("Object leaving. Distance: "); Serial.println(distance);
-        for(angle = 90; angle >= 10; angle--){                                  
+        delay(1000);
+        for(angle = 120; angle >= 25; angle--){                                  
            servo.write(angle);               
            delay(15);                   
         } 
+     }else{
+        Serial.print("Password Wrong!");
+        playFailTone();
      }
      
      

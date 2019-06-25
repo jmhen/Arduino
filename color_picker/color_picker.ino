@@ -9,6 +9,7 @@
 #define PhotosensitiveA A2 
 #define PhotosensitiveB A0
 #define LED 13
+#define INFRARED 4
 
 #define NIL 0
 #define RED   1
@@ -49,7 +50,7 @@ void setup() {
   pinMode(PhotosensitiveA, INPUT);
   pinMode(PhotosensitiveB, INPUT);
   pinMode(LED, OUTPUT);
-  
+  pinMode(INFRARED, INPUT);
   if(!apds.begin()){
     Serial.println("failed to initialize device! Please check your wiring.");
   }
@@ -87,18 +88,16 @@ int colorDetect()
   apds.getColorData(&r, &g, &b, &c);
   
   //Find the largest value in R, G, B. For example, the maximum is R means that the object is Red
-  if (r > g){
+  if (r > g || (r >600 && g>600 && b>900)){ // red or white for plastic
     mx = r;   
     t = RED; 
-    if( r-g < 40 ) t = YELLOW;
-    } 
-  else{
+  }else{
     mx = g;
     t = GREEN;
-    if( g-r < 40 ) t = YELLOW;
+    if( g-r < 250 ) t = YELLOW;
     }
 
-  if (b > mx){
+  if (b > mx && r < 300){
     mx = b;
     t = BLUE;
   }
@@ -168,19 +167,22 @@ void run()
     switch (step)
     {
       case 0:
-        
+//        Serial.print("light intensity: ");
+//        Serial.println(AdcChange(analogRead(PhotosensitiveA)));
       // Execute NO.0 action group to move the object over the color sensor, if an object is detected by obscuring light.
-
+          
           //Only start processing when there is object on station 1 but no object on station 2
-          if(AdcChange(analogRead(PhotosensitiveA)) <= 15)  //亮度大于15的我们认为是没有物体遮住光敏传感器
+          if(AdcChange(analogRead(PhotosensitiveA)) <= 7 && digitalRead(INFRARED) == HIGH)  //亮度大于15的我们认为是没有物体遮住光敏传感器
           {
+            
             Serial.print("light intensity: ");
             Serial.println(AdcChange(analogRead(PhotosensitiveA)));
+            Serial.println("Vehicle exited");
             digitalWrite(LED, HIGH);    //点亮13口led灯
             delay(500);
             myController.runActionGroup(ACTIONGROUP_CHECK, 1);
             Serial.println("ActtionGroup: check");
-            timer = millis() + 7000; //rough duration of action
+            timer = millis() + 12000; //rough duration of action
             step = 1;
           }
           else
@@ -197,10 +199,12 @@ void run()
 
         
       case 1:
+        Serial.println("Station 1: ");
         step = 0;
         //The action group is finished, which means that the object has been moved above the color sensor.
         if (myController.isRunning() == false)
         {
+          Serial.println("===== move to color sorting station ==== ");
           step = 2;
           timer = millis() + 300;
 
@@ -210,15 +214,17 @@ void run()
 
         
       case 2:
+        Serial.println("Station 2: ");
       //Detect the color of objects.
         color = colorDetect();
         Serial.print("color detected: "); Serial.println(color);
         draw();
+        Serial.println("Move to repective area.");
         if (color == RED)
         {
 //          Serial.print("station 1: "); Serial.println(AdcChange(analogRead(PhotosensitiveA)));
 //          Serial.print("station 2: "); Serial.println(AdcChange(analogRead(PhotosensitiveB)));
-          while(AdcChange(analogRead(PhotosensitiveB))<=15){}
+          while(AdcChange(analogRead(PhotosensitiveB))<=7){}
           delay(1000);
           Serial.println("Station 2 Freed!");
           myController.runActionGroup(ACTIONGROUP_RED, 1);  
@@ -239,7 +245,7 @@ void run()
         else if (color == YELLOW)
         {
           myController.runActionGroup(ACTIONGROUP_YELLOW, 1); 
-          Serial.println("ActtionGroup: BLUE");
+          Serial.println("ActtionGroup: YELLOW");
         }
         else
         {
